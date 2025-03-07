@@ -5,6 +5,8 @@ import com.example.demo.Server.Repository.AppUsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class AppUserService {
 
@@ -19,4 +21,7 @@ public class AppUserService {
         System.out.println("Zapisano");
     }
 
+    public List<AppUsers> allAppUsers(){
+        return appUsersRepository.findAll();
+    }
 }
