@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie</title>
+    <link rel="stylesheet" href="login.css"> <!-- Link do pliku CSS -->
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <h2>Logowanie</h2>
+            <form id="loginForm">
+                <input type="text" id="username" class="input-field" placeholder="Nazwa użytkownika" required>
+                <input type="password" id="password" class="input-field" placeholder="Hasło" required>
+                <button type="submit" class="btn">Zaloguj się</button>
+                <div id="errorMessage" class="error"></div>
+            </form>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2025 Twoja Firma | Wszystkie prawa zastrzeżone</p>
+    </footer>
+
+    <script src="app.js"></script> <!-- Link do pliku JS -->
+</body>
+</html>

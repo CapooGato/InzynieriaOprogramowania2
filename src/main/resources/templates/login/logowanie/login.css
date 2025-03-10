@@ -1,0 +1,96 @@
+/* Zmienne kolorów */
+:root {
+    --primary-color: #6D8196; /* Szaro-niebieski */
+    --secondary-color: #ADCCED; /* Jasny niebieski */
+    --accent-color: #546373; /* Średnio ciemny niebieski */
+    --dark-color: #36404A; /* Ciemny niebieski */
+}
+
+/* Styl całej strony */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Aby cała strona była co najmniej wysokości ekranu */
+}
+
+/* Kontener dla formularza */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1; /* Zapewnia, że kontener będzie zajmował pozostałą przestrzeń */
+}
+
+/* Okno logowania */
+.login-box {
+    width: 300px;
+    padding: 40px;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Nagłówek formularza */
+h2 {
+    text-align: center;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Pola formularza */
+.input-field {
+    width: 279px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--accent-color);
+    border-radius: 5px;
+    background-color: var(--secondary-color);
+    color: var(--dark-color);
+    font-size: 16px;
+}
+
+.input-field:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+/* Przycisk logowania */
+.btn {
+    width: 300px;
+    padding: 10px;
+    background-color: var(--accent-color);
+    color: white;
+    border: 3px;
+    border-color: aliceblue;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.btn:hover {
+    background-color: rgb(161, 183, 206);
+}
+
+/* Komunikaty o błędach */
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Styl stopki sticky */
+.footer {
+    background-color: var(--dark-color);
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    font-size: 14px;
+}
