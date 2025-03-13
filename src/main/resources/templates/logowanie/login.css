@@ -6,17 +6,6 @@
     --dark-color: #36404A; /* Ciemny niebieski */
 }
 
-/* Styl całej strony */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: var(--dark-color);
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; /* Aby cała strona była co najmniej wysokości ekranu */
-}
-
 /* Kontener dla formularza */
 .container {
     display: flex;
@@ -32,14 +21,6 @@ body {
     border-radius: 10px;
     background-color: var(--primary-color);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Nagłówek formularza */
-h2 {
-    text-align: center;
-    color: var(--dark-color);
-    margin-bottom: 20px;
-    font-size: 24px;
 }
 
 /* Pola formularza */
@@ -74,23 +55,4 @@ h2 {
 
 .btn:hover {
     background-color: rgb(161, 183, 206);
-}
-
-/* Komunikaty o błędach */
-.error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-}
-
-/* Styl stopki sticky */
-.footer {
-    background-color: var(--dark-color);
-    color: white;
-    text-align: center;
-    padding: 20px 0;
-    position: sticky;
-    bottom: 0;
-    width: 100%;
-    font-size: 14px;
 }

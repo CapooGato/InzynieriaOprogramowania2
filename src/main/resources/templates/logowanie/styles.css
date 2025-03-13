@@ -36,10 +36,10 @@ h2 {
 
 /* Styl stopki sticky */
 .footer {
-    background-color: var(--dark-color);
+    background-color: var(--accent-color);
     color: white;
     text-align: center;
-    padding: 20px 0;
+    padding: 10px 0;
     position: sticky;
     bottom: 0;
     width: 100%;

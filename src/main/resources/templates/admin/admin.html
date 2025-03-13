@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administrator Urzędu Skarbowego</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<div class="container">
+    <!-- Lewa część - Lista użytkowników -->
+    <div class="user-list">
+        <h2>Lista użytkowników</h2>
+        <input type="text" id="search" placeholder="Szukaj użytkowników..." oninput="filterUsers()">
+        <ul id="userList">
+            <!-- Lista użytkowników będzie dynamicznie wstawiana tutaj -->
+        </ul>
+    </div>
+
+    <!-- Prawa część - Formularz dodawania użytkownika -->
+    <div class="add-user">
+        <h2>Dodaj użytkownika</h2>
+        <form id="addUserForm" onsubmit="addUser(event)">
+            <label for="login">Login:</label>
+            <input type="text" id="login" required>
+
+            <label for="password">Hasło:</label>
+            <input type="password" id="password" required>
+
+            <label for="role">Rola:</label>
+            <select id="role">
+                <option value="Admin">Admin</option>
+                <option value="Urzędnik">Urzędnik</option>
+                <option value="Podatnik">Podatnik</option>
+            </select>
+
+            <button type="submit">Dodaj użytkownika</button>
+        </form>
+    </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
