@@ -5,7 +5,9 @@
     --accent-color: #546373; /* Średnio ciemny niebieski */
     --dark-color: #36404A; /* Ciemny niebieski */
 }
-
+.spacer{
+    min-height: 100px;
+}
 /* Styl całej strony */
 body {
     font-family: Arial, sans-serif;
@@ -33,15 +35,23 @@ h2 {
     font-size: 14px;
     text-align: center;
 }
-
-/* Styl stopki sticky */
-.footer {
-    background-color: var(--dark-color);
+header {
+    background-color: var(--accent-color);
     color: white;
     text-align: center;
-    padding: 20px 0;
-    position: sticky;
+    padding: 3vh 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.footer {
+    background-color: var(--accent-color);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
     bottom: 0;
     width: 100%;
-    font-size: 14px;
 }
+

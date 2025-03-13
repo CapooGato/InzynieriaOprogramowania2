@@ -1,43 +1,95 @@
+/* Styl dla kontenera */
 .container {
     display: flex;
-    width: 80%;
     justify-content: space-between;
-}
-
-.user-list, .add-user {
-    width: 45%;
-    background-color: white;
+    max-width: 900px;
+    margin: 10vh auto;
     padding: 20px;
+    background-color: var(--secondary-color);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-input, select {
+/* Styl dla listy użytkowników */
+.user-list {
+    width: 45%;
+}
+
+.user-list h2 {
+    color: var(--dark-color);
+    text-align: center;
+}
+
+#search {
     width: 100%;
-    padding: 10px;
+    padding: 8px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+}
+
+#userList {
+    list-style: none;
+    padding: 0;
+}
+
+#userList li {
+    background-color: var(--secondary-color);
+    margin: 5px 0;
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 4px;
+}
+
+#userList button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+#userList button:hover {
+    background-color: darkred;
+}
+
+/* Styl dla formularza dodawania użytkownika */
+.add-user {
+    width: 45%;
+}
+
+.add-user h2 {
+    color: var(--dark-color);
+    text-align: center;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    margin: 5px 0;
+    color: var(--dark-color);
+}
+
+input, select, button {
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid var(--accent-color);
     border-radius: 4px;
 }
 
 button {
-    padding: 10px 15px;
-    background-color: #4CAF50;
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
 }
 
 button:hover {
-    background-color: #45a049;
-}
-
-ul {
-    list-style-type: none;
-}
-
-li {
-    padding: 10px;
-    border-bottom: 1px solid #ccc;
+    background-color: var(--accent-color);
 }
