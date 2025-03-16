@@ -3,7 +3,7 @@
     display: flex;
     justify-content: space-between;
     max-width: 900px;
-    margin: 10vh auto;
+    margin: 15vh auto;
     padding: 20px;
     background-color: var(--secondary-color);
     border-radius: 8px;
