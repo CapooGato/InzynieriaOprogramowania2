@@ -1,0 +1,32 @@
+CREATE TABLE role (
+    rola_id    INTEGER NOT NULL,
+    nazwa_roli TEXT,
+    CONSTRAINT role_pk PRIMARY KEY (rola_id)
+);
+
+CREATE TABLE urzedy (
+    urzad_id    INTEGER NOT NULL,
+    miejscowosc TEXT,
+    CONSTRAINT urzedy_pk PRIMARY KEY (urzad_id)
+);
+
+CREATE TABLE uzytkownicy (
+    uzytkownik_id INTEGER NOT NULL,
+    login         TEXT,
+    haslo         TEXT,
+    urzad         INTEGER NOT NULL,
+    rola          INTEGER NOT NULL,
+    CONSTRAINT uzytkownicy_pk PRIMARY KEY (uzytkownik_id),
+    CONSTRAINT uzytkownicy_role_fk FOREIGN KEY (rola) REFERENCES role (rola_id),
+    CONSTRAINT uzytkownicy_urzedy_fk FOREIGN KEY (urzad) REFERENCES urzedy (urzad_id)
+);
+
+CREATE TABLE wnioski (
+    wniosek_id           INTEGER NOT NULL,
+    uri                  TEXT,
+    status               TEXT,
+    komentarz_do_wniosku TEXT,
+    uzytkownik           INTEGER NOT NULL,
+    CONSTRAINT wnioski_pk PRIMARY KEY (wniosek_id),
+    CONSTRAINT wnioski_uzytkownicy_fk FOREIGN KEY (uzytkownik) REFERENCES uzytkownicy (uzytkownik_id)
+);

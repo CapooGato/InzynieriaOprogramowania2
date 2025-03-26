@@ -1,0 +1,19 @@
+INSERT INTO role (rola_id, nazwa_roli) VALUES
+(1, 'Administrator'),
+(2, 'Urzednik'),
+(3, 'Podatnik');
+
+INSERT INTO urzedy (urzad_id, miejscowosc) VALUES
+(1, 'Urząd skarbowy w Warszawie'),
+(2, 'Urząd skarbowy w Krakowie'),
+(3, 'Urząd skarbowy w Gdańsku');
+
+INSERT INTO uzytkownicy (uzytkownik_id, login, haslo, urzad, rola) VALUES
+(1, 'admin', 'haslo123', 1, 1),
+(2, 'urzednik', 'haslo456', 2, 2),
+(3, 'podatnik', 'haslo789', 3, 3);
+
+INSERT INTO wnioski (wniosek_id, uri, status, komentarz_do_wniosku, uzytkownik) VALUES
+(1, './baza_wnioskow/wniosek-1.pdf', 'Nowy', 'Brak uwag', 1),
+(2, './baza_wnioskow/wniosek-2.pdf', 'W trakcie', 'Wymaga dodatkowych informacji', 2),
+(3, './baza_wnioskow/wniosek-3.pdf', 'Zamknięty', 'Zatwierdzony', 3);
