@@ -12,7 +12,7 @@ public class Wnioski {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(nullable = false)
-    private int wniosek_id;
+    private int wniosekId;
 
     @Column
     private String uri;
@@ -21,7 +21,7 @@ public class Wnioski {
     private String status;
 
     @Column
-    private String komentarz_do_wniosku;
+    private String komentarzDoWniosku;
 
     @ManyToOne
     @JoinColumn(name = "uzytkownik", nullable = false)
@@ -43,12 +43,12 @@ public class Wnioski {
         this.status = status;
     }
 
-    public String getKomentarz_do_wniosku() {
-        return komentarz_do_wniosku;
+    public String getkomentarzDoWniosku() {
+        return komentarzDoWniosku;
     }
 
-    public void setKomentarz_do_wniosku(String komentarz_do_wniosku) {
-        this.komentarz_do_wniosku = komentarz_do_wniosku;
+    public void setkomentarzDoWniosku(String komentarzDoWniosku) {
+        this.komentarzDoWniosku = komentarzDoWniosku;
     }
 
     public Uzytkownicy getUzytkownik() {

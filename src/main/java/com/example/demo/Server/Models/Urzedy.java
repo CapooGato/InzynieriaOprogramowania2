@@ -10,7 +10,7 @@ public class Urzedy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(nullable = false)
-    private int urzad_id;
+    private int urzadId;
 
     private String miejscowosc;
 

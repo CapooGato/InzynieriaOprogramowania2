@@ -9,6 +9,6 @@ import java.util.Optional;
 
 @Repository
 public interface WnioskiRepository extends JpaRepository<Wnioski,Long> {
-    @Query("SELECT u FROM Uzytkownicy u WHERE u.uzytkownik_id = :uzytkownikId")
+    @Query("SELECT u FROM Uzytkownicy u WHERE u.uzytkownikId = :uzytkownikId")
     Optional<Wnioski> findAllByUzytkownik_Uzytkownik_id(Long uzytkownikId);
 }

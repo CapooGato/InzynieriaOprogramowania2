@@ -9,28 +9,41 @@ import java.util.Optional;
 
 @Service
 public class UzytkownicyService {
-    private final UzytkownicyRepository repository;
+    private final UzytkownicyRepository uzytkownicyRepository;
     @Autowired
-    public UzytkownicyService(UzytkownicyRepository repository) {
-        this.repository = repository;
+    public UzytkownicyService(UzytkownicyRepository uzytkownicyRepository) {
+        this.uzytkownicyRepository = uzytkownicyRepository;
     }
-    public void addUzytkownicy(Uzytkownicy uzytkownik){
-        repository.save(uzytkownik);
+    public Uzytkownicy addUzytkownicy(Uzytkownicy uzytkownik){
+        return uzytkownicyRepository.save(uzytkownik);
     }
     public void removeUzytkownicyById(long id){
-        repository.deleteById(id);
+        uzytkownicyRepository.deleteById(id);
     }
     public void updateUzytkownicy(Long id, Uzytkownicy updateUzytkownik){
-        Optional<Uzytkownicy> optionalUzytkownicy = repository.findById(id);
+        Optional<Uzytkownicy> optionalUzytkownicy = uzytkownicyRepository.findById(id);
         if(optionalUzytkownicy.isPresent()){
             optionalUzytkownicy.get().setLogin(updateUzytkownik.getLogin());
             optionalUzytkownicy.get().setHaslo(updateUzytkownik.getHaslo());
             optionalUzytkownicy.get().setUrzad(updateUzytkownik.getUrzad());
             optionalUzytkownicy.get().setRola(updateUzytkownik.getRola());
-            repository.save(optionalUzytkownicy.get());
+            uzytkownicyRepository.save(optionalUzytkownicy.get());
         };
     }
     public Optional<Uzytkownicy> getAllUzytkownicyByRole(String nazwaRoli){
-       return repository.findAllByRola_Nazwa_roli(nazwaRoli);
+       return uzytkownicyRepository.findAllByRola_Nazwa_roli(nazwaRoli);
+    }
+
+    public Boolean findUserByLogin(String login){
+        return uzytkownicyRepository.findByLogin(login).isPresent();
+    }
+
+    /**
+     * Zwraca ścieżke do odpowiedniego html po roli.
+     * np: Rola: ADMIN, zwróci "/admin/admin"
+     * */
+    public String getViewByRole(Uzytkownicy uzytkownik){
+        String rola = uzytkownik.getRola().getNazwaRoli();
+        return "/" + rola.toLowerCase() + "/" + rola.toLowerCase();
     }
 }

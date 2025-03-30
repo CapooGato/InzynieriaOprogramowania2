@@ -15,9 +15,9 @@ public class Uzytkownicy {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(nullable = false)
-    private int uzytkownik_id;
+    private int uzytkownikId;
 
-    @Column
+    @Column(unique = true)
     private String login;
 
     @Column
@@ -25,12 +25,10 @@ public class Uzytkownicy {
 
     @ManyToOne
     @JoinColumn(name = "urzad", nullable = false)
-
     private Urzedy urzad;
 
     @ManyToOne
     @JoinColumn(name = "rola", nullable = false)
-
     private Role rola;
 
     @OneToMany(mappedBy = "uzytkownik")

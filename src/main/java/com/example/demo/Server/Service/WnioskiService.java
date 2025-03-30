@@ -24,7 +24,7 @@ public class WnioskiService {
         if (optionalWnioski.isPresent()) {
             optionalWnioski.get().setUri(wniosek.getUri());
             optionalWnioski.get().setStatus(wniosek.getStatus());
-            optionalWnioski.get().setKomentarz_do_wniosku(wniosek.getKomentarz_do_wniosku());
+            optionalWnioski.get().setkomentarzDoWniosku(wniosek.getkomentarzDoWniosku());
             repository.save(optionalWnioski.get());
         }
     }

@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface UzytkownicyRepository extends JpaRepository<Uzytkownicy,Long> {
-    @Query("SELECT u FROM Uzytkownicy u WHERE u.rola.nazwa_roli = :nazwaRoli")
+    @Query("SELECT u FROM Uzytkownicy u WHERE u.rola.nazwaRoli = :nazwaRoli")
     Optional<Uzytkownicy> findAllByRola_Nazwa_roli(String nazwaRoli);
+
+    Optional<Uzytkownicy> findByLogin(String login);
 }
