@@ -1,5 +1,7 @@
 package com.example.demo.Server.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -18,6 +20,7 @@ public class Role {
     private String nazwaRoli;
 
     @OneToMany(mappedBy = "rola")
+    @JsonIgnore
     private Collection<Uzytkownicy> uzytkowniciesByRolaId;
 
     Role(){}

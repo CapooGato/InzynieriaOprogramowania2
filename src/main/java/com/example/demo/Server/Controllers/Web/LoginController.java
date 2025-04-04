@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping(value = "/login")
+@RequestMapping(/*value = "/login"*/)
 public class LoginController {
     private final UzytkownicyService uzytkownicyService;
 
@@ -17,7 +17,7 @@ public class LoginController {
     public LoginController(UzytkownicyService uzytkownicyService){
         this.uzytkownicyService = uzytkownicyService;
     }
-    @GetMapping()
+    @GetMapping(value = "/login")
     public String showLoginForm(){
         return "logowanie/login";
     }
@@ -26,13 +26,16 @@ public class LoginController {
      * redirect zmienia URL, a return nie.
      * trzeba dorobić kontroler od dashboard żeby działał
      * */
-    @PostMapping()
+    @PostMapping(value = "/login")
     public String processLogin(@Valid @ModelAttribute Uzytkownicy uzytkownik){
         if(uzytkownicyService.findUserByLogin(uzytkownik.getLogin())){
-            return "redirect:admin/admin";//uzytkownicyService.getViewByRole(uzytkownik);
+            return "redirect:/admin";//uzytkownicyService.getViewByRole(uzytkownik);
         }
         return "logowanie/login";
     }
 
-
+    @GetMapping(value = "/admin")
+    public String adminDashboard(){
+        return "/admin/admin";
+    }
 }

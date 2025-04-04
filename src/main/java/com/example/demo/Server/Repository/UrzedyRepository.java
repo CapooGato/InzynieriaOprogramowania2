@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UrzedyRepository extends JpaRepository<Urzedy,Long> {
+    void deleteById(long id);
 }
