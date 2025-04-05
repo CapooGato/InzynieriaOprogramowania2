@@ -22,6 +22,12 @@ public class RoleController {
         this.roleService = roleService;
     }
 
+    @PostMapping()
+    public ResponseEntity<Role> saveRole(@Valid @RequestBody Role role){
+        Role savedRole = roleService.saveRole(role);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedRole);
+    }
+
     @GetMapping()
     public ResponseEntity<List<Role>> getAllRole(){
         List<Role> rolesList = roleService.getAllRole();
@@ -35,11 +41,5 @@ public class RoleController {
         Role role =  roleService.getRoleById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NO_CONTENT, "Rola o podanym ID: " + id +" nie została znaleziona"));
         return ResponseEntity.status(HttpStatus.OK).body(role);
-    }
-
-    @PostMapping()
-    public ResponseEntity<Role> saveRole(@Valid @RequestBody Role role){
-        Role savedRole = roleService.saveRole(role);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedRole);
     }
 }

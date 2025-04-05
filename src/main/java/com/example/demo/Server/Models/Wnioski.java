@@ -11,7 +11,6 @@ import lombok.Setter;
 public class Wnioski {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(nullable = false)
     private int wniosekId;
 
     @Column
@@ -24,7 +23,7 @@ public class Wnioski {
     private String komentarzDoWniosku;
 
     @ManyToOne
-    @JoinColumn(name = "uzytkownik", nullable = false)
+    @JoinColumn(name = "uzytkownik")
     private Uzytkownicy uzytkownik;
 
     public String getUri() {

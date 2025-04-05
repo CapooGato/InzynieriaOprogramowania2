@@ -13,7 +13,6 @@ import java.util.Collection;
 public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    @Column(nullable = false)
     private int rolaId;
 
     @Column

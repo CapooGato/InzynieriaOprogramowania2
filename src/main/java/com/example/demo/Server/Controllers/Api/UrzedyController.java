@@ -22,18 +22,18 @@ public class UrzedyController {
         this.urzedyService = urzedyService;
     }
 
+    @PostMapping()
+    public ResponseEntity<Urzedy> addUrzad(@Valid @RequestBody Urzedy urzedy){
+        Urzedy savedUrzedy = urzedyService.addUrzad(urzedy);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedUrzedy);
+    }
+
     @GetMapping()
     public ResponseEntity<List<Urzedy>> getAllUrzedy(){
         List<Urzedy> urzedyList = urzedyService.getAllUrzedy();
         return urzedyList.isEmpty()
                 ? ResponseEntity.status(HttpStatus.NO_CONTENT).build()
                 : ResponseEntity.status(HttpStatus.OK).body(urzedyList);
-    }
-
-    @PostMapping()
-    public ResponseEntity<Urzedy> addUrzad(@Valid @RequestBody Urzedy urzedy){
-        Urzedy savedUrzedy = urzedyService.addUrzad(urzedy);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUrzedy);
     }
 
     @PutMapping(value = "/{id}")
