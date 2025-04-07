@@ -1,5 +1,6 @@
 package com.example.demo.Server.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -31,6 +32,7 @@ public class Uzytkownicy {
     private Role rola;
 
     @OneToMany(mappedBy = "uzytkownik")
+    @JsonIgnore
     private Collection<Wnioski> wnioskisByUzytkownikId;
 
     public String getLogin() {

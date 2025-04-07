@@ -22,7 +22,7 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @PostMapping()
+    @PostMapping(value = "/create")
     public ResponseEntity<Role> saveRole(@Valid @RequestBody Role role){
         Role savedRole = roleService.saveRole(role);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedRole);

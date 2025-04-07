@@ -22,7 +22,7 @@ public class UrzedyController {
         this.urzedyService = urzedyService;
     }
 
-    @PostMapping()
+    @PostMapping(value = "/create")
     public ResponseEntity<Urzedy> addUrzad(@Valid @RequestBody Urzedy urzedy){
         Urzedy savedUrzedy = urzedyService.addUrzad(urzedy);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUrzedy);
@@ -36,7 +36,7 @@ public class UrzedyController {
                 : ResponseEntity.status(HttpStatus.OK).body(urzedyList);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}/update")
     public ResponseEntity<Urzedy> updateUrzad(@PathVariable Long id, @Valid @RequestBody Urzedy urzedy){
         Urzedy updatedUrzad = urzedyService.updateUrzad(id, urzedy)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Urzad o ID: " + id +
@@ -44,7 +44,7 @@ public class UrzedyController {
         return ResponseEntity.status(HttpStatus.OK).body(updatedUrzad);
     }
 
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{id}/delete")
     public ResponseEntity<String> removeUrzadById(@PathVariable long id){
         Boolean deleted = urzedyService.removeUrzadById(id);
         return deleted

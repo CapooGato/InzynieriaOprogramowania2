@@ -22,7 +22,7 @@ public class WnioskiController {
         this.wnioskiService = wnioskiService;
     }
 
-    @PostMapping()
+    @PostMapping(value = "/create")
     public ResponseEntity<Wnioski> addWnioski(@Valid @RequestBody Wnioski wniosek){
         Wnioski savedWniosek = wnioskiService.addWnioski(wniosek);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedWniosek);
@@ -35,7 +35,7 @@ public class WnioskiController {
         return ResponseEntity.status(HttpStatus.OK).body(wnioski);
     }
 
-    @GetMapping(value = "/podatnik/{id}")
+    @GetMapping(value = "/uzytkownik/{id}")
     public ResponseEntity<List<Wnioski>> getWnioskiByUzytkownikId(@PathVariable Long id){
         List<Wnioski> wnioskiList = wnioskiService.getWnioskiByUzytkownikId(id);
         return wnioskiList.isEmpty()
@@ -43,7 +43,7 @@ public class WnioskiController {
                 : ResponseEntity.status(HttpStatus.OK).body(wnioskiList);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}/update")
     public ResponseEntity<Wnioski> updateWnioskiById(@PathVariable Long id, @Valid @RequestBody Wnioski wniosek){
         Wnioski updatedWniosek = wnioskiService.updateWnioski(id, wniosek);
         return ResponseEntity.status(HttpStatus.OK).body(updatedWniosek);
