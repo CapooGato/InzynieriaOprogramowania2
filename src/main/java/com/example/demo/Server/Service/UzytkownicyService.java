@@ -67,8 +67,8 @@ public class UzytkownicyService {
         return uzytkownicyRepository.findAll();
     }
 
-    public void usunUzytkownikaPoId(long id) {
-        uzytkownicyRepository.deleteById(id);
+    public void usunUzytkownikaPoId(Integer id) {
+        uzytkownicyRepository.deleteById(Long.valueOf(id));
     }
 
 }

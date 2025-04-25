@@ -11,7 +11,7 @@ public class Urzedy {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int urzadId;
+    private Integer urzadId;
 
     private String miejscowosc;
 
@@ -21,7 +21,7 @@ public class Urzedy {
 
     public Urzedy(){}
 
-    public Urzedy(int urzadId, String miejscowosc, Collection<Uzytkownicy> uzytkowniciesByUrzadId) {
+    public Urzedy(Integer urzadId, String miejscowosc, Collection<Uzytkownicy> uzytkowniciesByUrzadId) {
         this.urzadId = urzadId;
         this.miejscowosc = miejscowosc;
         this.uzytkowniciesByUrzadId = uzytkowniciesByUrzadId;
@@ -35,11 +35,11 @@ public class Urzedy {
         this.miejscowosc = miejscowosc;
     }
 
-    public int getUrzadId() {
+    public Integer getUrzadId() {
         return urzadId;
     }
 
-    public void setUrzadId(int urzadId) {
+    public void setUrzadId(Integer urzadId) {
         this.urzadId = urzadId;
     }
 

@@ -5,9 +5,11 @@
     --accent-color: #546373; /* Średnio ciemny niebieski */
     --dark-color: #36404A; /* Ciemny niebieski */
 }
-.spacer{
+
+.spacer {
     min-height: 100px;
 }
+
 /* Styl całej strony */
 body {
     font-family: Arial, sans-serif;
@@ -19,7 +21,6 @@ body {
     min-height: 100vh; /* Aby cała strona była co najmniej wysokości ekranu */
 }
 
-
 /* Nagłówek formularza */
 h2 {
     text-align: center;
@@ -28,13 +29,13 @@ h2 {
     font-size: 24px;
 }
 
-
 /* Komunikaty o błędach */
 .error {
     color: red;
     font-size: 14px;
     text-align: center;
 }
+
 header {
     background-color: var(--accent-color);
     color: white;
@@ -45,6 +46,7 @@ header {
     width: 100%;
     z-index: 1000;
 }
+
 .footer {
     background-color: var(--accent-color);
     color: white;
@@ -54,10 +56,12 @@ header {
     bottom: 0;
     width: 100%;
 }
+
+/* Kontener na wszystkie sekcje */
 .container {
-    display: block;
-    justify-content: center;
-    max-width: 900px;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
     margin: 10vh auto;
     padding: 20px;
     background-color: var(--secondary-color);
@@ -65,3 +69,128 @@ header {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Sekcje formularzy (dodajemy odstępy między sekcjami) */
+.add-user, .urzedy-section, .user-list {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px; /* Odstęp między sekcjami */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 48%; /* Ograniczenie szerokości sekcji */
+    box-sizing: border-box;
+}
+
+/* Formularz dodawania użytkownika */
+form label {
+    font-size: 14px;
+    margin-bottom: 8px;
+    display: block;
+}
+
+/* Odstęp między polami formularza */
+form input, form select, form textarea {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%; /* Szerokość na całą sekcję */
+    box-sizing: border-box; /* Uwzględnia padding i border w szerokości */
+}
+
+/* Stylizacja dla przycisku dodawania użytkownika */
+form button {
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%; /* Szerokość na całą sekcję */
+}
+
+form button:hover {
+    background-color: #218838;
+}
+
+/* Stylizacja dla przycisku usuwania */
+button[type="submit"] {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button[type="submit"]:hover {
+    background-color: #c82333;
+}
+
+/* Stylizacja sekcji z listami */
+ul {
+    list-style-type: none;
+    padding: 0;
+    max-height: 200px; /* Ograniczenie wysokości */
+    overflow-y: auto; /* Włączenie scrollowania */
+    margin-top: 10px;
+}
+
+li {
+    padding: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+li:last-child {
+    border-bottom: none;
+}
+
+li span {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+/* Stylizacja dla wyszukiwania */
+input[type="text"] {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 14px;
+}
+
+/* Dostosowanie marginesów, aby nie nachodziły na siebie */
+.container .add-user, .container .urzedy-section, .container .user-list {
+    margin-right: 30px;
+    margin-left: 30px;
+}
+
+/* Sekcja wyszukiwania */
+input[type="text"] {
+    padding: 10px; /* Padding dla tekstu */
+    width: 100%; /* Szerokość na całą sekcję */
+    border: 1px solid #ccc; /* Border */
+    border-radius: 4px; /* Zaokrąglenie rogów */
+    margin-bottom: 15px; /* Odstęp od kolejnego elementu */
+    font-size: 14px; /* Wielkość czcionki */
+    box-sizing: border-box; /* Uwzględnia padding i border w szerokości */
+}
+
+/* Stylizacja układu dla formularza użytkownika */
+.add-user form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Odstęp między elementami formularza */
+}
+
+footer {
+    background-color: var(--accent-color);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}

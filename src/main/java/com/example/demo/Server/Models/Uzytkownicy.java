@@ -15,7 +15,7 @@ public class Uzytkownicy {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int uzytkownikId;
+    private Integer uzytkownikId;
 
     @Column(unique = true)
     private String login;
@@ -58,11 +58,11 @@ public class Uzytkownicy {
         this.urzad = urzad;
     }
 
-    public int getUzytkownikId() {
+    public Integer getUzytkownikId() {
         return uzytkownikId;
     }
 
-    public void setUzytkownikId(int uzytkownikId) {
+    public void setUzytkownikId(Integer uzytkownikId) {
         this.uzytkownikId = uzytkownikId;
     }
 

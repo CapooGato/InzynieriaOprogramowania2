@@ -2,6 +2,7 @@ package com.example.demo.Server.Service;
 
 import com.example.demo.Server.Models.Urzedy;
 import com.example.demo.Server.Repository.UrzedyRepository;
+import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UrzedyService {
         return urzedyRepository.findAll();
     }
     public Urzedy addUrzad(Urzedy urzad){
-        urzad.setUrzadId(0); // upewnij się że nowy rekord nie ma ID
+        urzad.setUrzadId(null); // upewnij się że nowy rekord nie ma ID
         return urzedyRepository.save(urzad);
     }
 
@@ -31,7 +32,7 @@ public class UrzedyService {
                     return urzedyRepository.save(urzad);
                 });
     }
-    public Boolean removeUrzadById(long id ){
+    public Boolean removeUrzadById(Long id ){
         Optional<Urzedy> urzad = urzedyRepository.findById(id);
         if(urzad.isPresent()){
             urzedyRepository.deleteById(id);
