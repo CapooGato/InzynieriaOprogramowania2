@@ -11,7 +11,7 @@
 
 </head>
 <body>
-<header class="header">Panel Urzędnika</header>
+<header class="header">Panel Urzędnika <b>Urząd Skarbowy w <span th:text="${nazwisko}"></span></b></header>
 
 <div class="container">
     <h2>Lista wniosków do przyjęcia</h2>
@@ -19,13 +19,22 @@
         <thead>
         <tr>
             <th>Imię Podatnika</th>
-            <th>Nazwisko Podatnika</th>
-            <th>Nazwa Wniosku</th>
+            <th>Nazwa pliku</th>
+            <th>Status Wniosku</th>
+            <th>Komentarz</th>
             <th>Akcje</th>
         </tr>
         </thead>
         <tbody id="wnioskiList">
-        <!-- Wnioski będą dynamicznie wstawiane tutaj -->
+        <tr th:each="wniosek : ${wnioski}">
+            <td th:text="${wniosek.uzytkownik.login} ?: 'Brak imienia'"></td>
+            <td th:text="${wniosek.fileName}"></td>
+            <td th:text="${wniosek.status}"></td>
+            <td th:text="${wniosek.komentarzDoWniosku} ?: 'Brak komentarza'"></td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(wnioski)}">
+            <td colspan="4">Brak wniosków do wyświetlenia.</td>
+        </tr>
         </tbody>
     </table>
 </div>

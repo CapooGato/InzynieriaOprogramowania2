@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface WnioskiRepository extends JpaRepository<Wnioski,Long> {
     List<Wnioski> findAllByUzytkownik_UzytkownikId(Long id);
+
+    List<Wnioski> findAllByUzytkownik_Urzad_UrzadId(Long id);
 }

@@ -4,6 +4,7 @@ import com.example.demo.Server.Models.Urzedy;
 import com.example.demo.Server.Models.Uzytkownicy;
 import com.example.demo.Server.Models.Wnioski;
 import com.example.demo.Server.Repository.UzytkownicyRepository;
+import com.example.demo.Server.Repository.WnioskiRepository;
 import com.example.demo.Server.Service.UrzedyService;
 import com.example.demo.Server.Service.UzytkownicyService;
 import com.example.demo.Server.Service.WnioskiService;
@@ -18,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -115,10 +117,15 @@ public class LoginController {
     }
 
     @GetMapping("/dashboard/urzednik")
-    public String urzednikDashboard(HttpSession session) {
+    public String urzednikDashboard(HttpSession session, Model model) {
         if (!"urzednik".equalsIgnoreCase((String) session.getAttribute("userRole"))) {
             return "redirect:/login";
         }
+        Integer uzytkownikIdInt = (Integer) session.getAttribute("uzytkownikId");
+        Optional<Uzytkownicy> uzytkownicy = uzytkownicyRepository.findById(Long.valueOf(uzytkownikIdInt));
+        List<Wnioski> wnioskiList = wnioskiService.getWnioskiByUrzadId(uzytkownicy.get().getUrzad().getUrzadId());
+        model.addAttribute("nazwisko",uzytkownicy.get().getUrzad().getMiejscowosc());
+        model.addAttribute("wnioski",wnioskiList);
         return "urzednik/urzednik";
     }
 

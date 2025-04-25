@@ -53,6 +53,10 @@ public class WnioskiService {
         return wnioskiRepository.findAllByUzytkownik_UzytkownikId(id); // NAZWA METODY W REPO MA ZNACZENIE – Upewnij się, że masz to dobrze
     }
 
+    public List<Wnioski> getWnioskiByUrzadId(Integer urzadId){
+        return wnioskiRepository.findAllByUzytkownik_Urzad_UrzadId(Long.valueOf(urzadId));
+    }
+
     @Transactional
     public Wnioski createWniosek(MultipartFile file, Integer uzytkownikId, String komentarz) throws Exception {
         // Walidacja użytkownika
