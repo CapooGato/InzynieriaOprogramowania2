@@ -1,3 +1,64 @@
+/* Zmienne kolorów */
+:root {
+    --primary-color: #6D8196; /* Szaro-niebieski */
+    --secondary-color: #ADCCED; /* Jasny niebieski */
+    --accent-color: #546373; /* Średnio ciemny niebieski */
+    --dark-color: #36404A; /* Ciemny niebieski */
+}
+
+.spacer {
+    min-height: 100px;
+}
+
+/* Styl całej strony */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--dark-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Aby cała strona była co najmniej wysokości ekranu */
+}
+
+/* Nagłówek formularza */
+h2 {
+    text-align: center;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+/* Komunikaty o błędach */
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
+
+header {
+    background-color: var(--accent-color);
+    color: white;
+    text-align: center;
+    padding: 3vh 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.footer {
+    background-color: var(--accent-color);
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+
+
 /* Styl dla kontenera */
 .container {
     max-width: 600px;
@@ -47,4 +108,51 @@ button {
 
 button:hover {
     background-color: var(--accent-color);
+}
+/* Sekcja z szablonami */
+.szablony-box {
+    width: 90%;
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: var(--primary-color);
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    color: white;
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+/* Linki do szablonów */
+.szablon-link {
+    display: inline-block;
+    color: white;
+    background-color: var(--accent-color);
+    padding: 8px 12px;
+    margin: 6px 0;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.szablon-link:hover {
+    background-color: var(--dark-color);
+}
+
+/* Komunikaty */
+.message {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
 }

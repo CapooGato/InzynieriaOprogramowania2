@@ -4,16 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Panel Podatnika</title>
-    <link rel="stylesheet" th:href="@{/css/styles.css}">
     <link rel="stylesheet" th:href="@{/css/podatnik.css}">
 </head>
 <body>
 <header class="header">Panel Podatnika</header>
 
 <div class="container">
+
+    <h2>Dostępne szablony wniosków</h2>
+    <div id="szablony-lista" class="szablony-box">
+        <p>Ładowanie szablonów...</p>
+    </div>
+
+    <hr>
+
     <h2>Wgraj nowy wniosek</h2>
     <form id="uploadForm" method="POST" enctype="multipart/form-data">
-        <!-- Przykładowe przekazanie ID użytkownika - należy dostosować do swojej implementacji -->
         <input type="hidden" id="uzytkownikId" th:value="${uzytkownik.uzytkownikId}">
 
         <div class="form-group">
@@ -29,7 +35,6 @@
         <button type="submit" class="btn-submit">Wyślij wniosek</button>
     </form>
 
-    <!-- Sekcja z komunikatami -->
     <div id="messages" class="messages-container"></div>
 </div>
 
@@ -39,64 +44,88 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-     const form = document.getElementById('uploadForm');
-     const messagesContainer = document.getElementById('messages');
+        const form = document.getElementById('uploadForm');
+        const messagesContainer = document.getElementById('messages');
+        const szablonyContainer = document.getElementById('szablony-lista');
 
-     const showMessage = (message, isError = false) => {
-         const messageDiv = document.createElement('div');
-         messageDiv.className = `message ${isError ? 'error' : 'success'}`;
-         messageDiv.textContent = message;
-         messagesContainer.appendChild(messageDiv);
+        const showMessage = (message, isError = false) => {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isError ? 'error' : 'success'}`;
+            messageDiv.textContent = message;
+            messagesContainer.appendChild(messageDiv);
+            setTimeout(() => messageDiv.remove(), 5000);
+        };
 
-         setTimeout(() => {
-             messageDiv.remove();
-         }, 5000);
-     };
+        const fetchSzablony = async () => {
+            try {
+                const response = await fetch('/api/szablony');
+                const data = await response.json();
 
-     form.addEventListener('submit', async (e) => {
-         e.preventDefault();
+                szablonyContainer.innerHTML = '';
+                if (!data.length) {
+                    szablonyContainer.textContent = 'Brak dostępnych szablonów.';
+                    return;
+                }
 
-         const formData = new FormData();
-         const fileInput = document.getElementById('wniosekPlik');
-         const uzytkownikId = document.getElementById('uzytkownikId').value;
-         const komentarz = document.getElementById('komentarz').value;
+                data.forEach(szablon => {
+                    const link = document.createElement('a');
+                    link.href = szablon.url;
+                    link.textContent = szablon.nazwa;
+                    link.className = 'szablon-link';
+                    link.download = szablon.nazwa;
+                    szablonyContainer.appendChild(link);
+                    szablonyContainer.appendChild(document.createElement('br'));
+                });
+            } catch (err) {
+                szablonyContainer.textContent = 'Nie udało się załadować szablonów.';
+            }
+        };
 
-         // Walidacja pliku
-         if (fileInput.files.length === 0) {
-             showMessage('Proszę wybrać plik PDF', true);
-             return;
-         }
+        fetchSzablony();
 
-         const file = fileInput.files[0];
-         if (file.type !== 'application/pdf') {
-             showMessage('Dozwolone są tylko pliki PDF', true);
-             return;
-         }
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-         formData.append('file', file);
-         formData.append('uzytkownikId', uzytkownikId);
-         formData.append('komentarz', komentarz);
+            const formData = new FormData();
+            const fileInput = document.getElementById('wniosekPlik');
+            const uzytkownikId = document.getElementById('uzytkownikId').value;
+            const komentarz = document.getElementById('komentarz').value;
 
-         try {
-             const response = await fetch('/api/wnioski/create', {
-                 method: 'POST',
-                 body: formData
-             });
+            if (fileInput.files.length === 0) {
+                showMessage('Proszę wybrać plik PDF', true);
+                return;
+            }
 
-             const result = await response.json();
+            const file = fileInput.files[0];
+            if (file.type !== 'application/pdf') {
+                showMessage('Dozwolone są tylko pliki PDF', true);
+                return;
+            }
 
-             if (response.ok) {
-                 showMessage(`Wniosek nr ${result.wniosekId} został złożony pomyślnie!`);
-                 form.reset();
-             } else {
-                 showMessage(`Błąd: ${result.error || 'Nieznany błąd'}`, true);
-             }
-         } catch (error) {
-             showMessage('Wystąpił błąd podczas przesyłania pliku', true);
-             console.error('Error:', error);
-         }
-     });
- });
+            formData.append('file', file);
+            formData.append('uzytkownikId', uzytkownikId);
+            formData.append('komentarz', komentarz);
+
+            try {
+                const response = await fetch('/api/wnioski/create', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    showMessage(`Wniosek nr ${result.wniosekId} został złożony pomyślnie!`);
+                    form.reset();
+                } else {
+                    showMessage(`Błąd: ${result.error || 'Nieznany błąd'}`, true);
+                }
+            } catch (error) {
+                showMessage('Wystąpił błąd podczas przesyłania pliku', true);
+                console.error('Error:', error);
+            }
+        });
+    });
 </script>
 </body>
 </html>
