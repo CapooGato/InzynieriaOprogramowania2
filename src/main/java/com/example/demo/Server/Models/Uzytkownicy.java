@@ -23,15 +23,14 @@ public class Uzytkownicy {
     @Column
     private String haslo;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "urzad")
     private Urzedy urzad;
 
-    @ManyToOne
-    @JoinColumn(name = "rola")
-    private Role rola;
+    @Column(name = "rola")
+    private String rola;
 
-    @OneToMany(mappedBy = "uzytkownik")
+    @OneToMany(mappedBy = "uzytkownik", fetch = FetchType.EAGER)
     @JsonIgnore
     private Collection<Wnioski> wnioskisByUzytkownikId;
 
@@ -59,11 +58,27 @@ public class Uzytkownicy {
         this.urzad = urzad;
     }
 
-    public Role getRola() {
+    public int getUzytkownikId() {
+        return uzytkownikId;
+    }
+
+    public void setUzytkownikId(int uzytkownikId) {
+        this.uzytkownikId = uzytkownikId;
+    }
+
+    public String getRola() {
         return rola;
     }
 
-    public void setRola(Role rola) {
+    public void setRola(String rola) {
         this.rola = rola;
+    }
+
+    public Collection<Wnioski> getWnioskisByUzytkownikId() {
+        return wnioskisByUzytkownikId;
+    }
+
+    public void setWnioskisByUzytkownikId(Collection<Wnioski> wnioskisByUzytkownikId) {
+        this.wnioskisByUzytkownikId = wnioskisByUzytkownikId;
     }
 }

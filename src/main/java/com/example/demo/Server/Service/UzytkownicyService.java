@@ -3,6 +3,8 @@ package com.example.demo.Server.Service;
 import com.example.demo.Server.Models.Uzytkownicy;
 import com.example.demo.Server.Repository.UzytkownicyRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -11,11 +13,13 @@ import java.util.Optional;
 
 @Service
 public class UzytkownicyService {
+
     private final UzytkownicyRepository uzytkownicyRepository;
     @Autowired
     public UzytkownicyService(UzytkownicyRepository uzytkownicyRepository) {
         this.uzytkownicyRepository = uzytkownicyRepository;
     }
+
     public Uzytkownicy addUzytkownicy(Uzytkownicy uzytkownik){
         return uzytkownicyRepository.save(uzytkownik);
     }
@@ -49,12 +53,22 @@ public class UzytkownicyService {
         uzytkownicyRepository.deleteById(id);
     }
 
-    /**
-     * Zwraca ścieżke do odpowiedniego html po roli.
-     * np: Rola: ADMIN, zwróci "/admin/admin"
-     * */
+
     public String getViewByRole(Uzytkownicy uzytkownik){
-        String rola = uzytkownik.getRola().getNazwaRoli();
-        return "/" + rola.toLowerCase() + "/" + rola.toLowerCase();
+        String rola = uzytkownicyRepository.findRola();
+        return rola;
     }
+
+    public Optional<Uzytkownicy> findByLogin(String login) {
+        return uzytkownicyRepository.findByLogin(login);
+    }
+
+    public List<Uzytkownicy> getAllUsers() {
+        return uzytkownicyRepository.findAll();
+    }
+
+    public void usunUzytkownikaPoId(long id) {
+        uzytkownicyRepository.deleteById(id);
+    }
+
 }

@@ -20,6 +20,7 @@ public class UrzedyService {
         return urzedyRepository.findAll();
     }
     public Urzedy addUrzad(Urzedy urzad){
+        urzad.setUrzadId(0); // upewnij się że nowy rekord nie ma ID
         return urzedyRepository.save(urzad);
     }
 
@@ -37,5 +38,13 @@ public class UrzedyService {
             return true;
         }
         return false;
+    }
+
+    public List<Urzedy> findAll() {
+        return urzedyRepository.findAll();
+    }
+
+    public void deleteUrzad(int id) {
+        urzedyRepository.deleteById(id);
     }
 }

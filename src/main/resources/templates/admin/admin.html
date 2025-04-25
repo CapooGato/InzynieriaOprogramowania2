@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl"
+      xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.bet.nz/thymeleaf/layout">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administrator Urzędu Skarbowego</title>
-    <link rel="stylesheet" href="../styles.css">
-    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" th:href="@{/css/styles.css}" />
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
 </head>
 <body>
 <header>Panel administracyjny</header>
@@ -13,34 +15,99 @@
     <!-- Lewa część - Lista użytkowników -->
     <div class="user-list">
         <h2>Lista użytkowników</h2>
-        <input type="text" id="search" placeholder="Szukaj użytkowników..." oninput="filterUsers()">
-        <ul id="userList">
-            <!-- Lista użytkowników będzie dynamicznie wstawiana tutaj -->
+        <input type="text" id="userSearch" placeholder="Szukaj użytkowników..." onkeyup="filterTable('userSearch', 'userDropdown')">
+        <ul id="userDropdown" class="dropdown-list">
+            <li th:each="user : ${uzytkownicy}">
+                <span th:text="${user.login}"></span> |
+                <span th:text="${user.rola}"></span> |
+                <span th:text="${user.urzad?.miejscowosc} ?: 'Brak urzędu'"></span>
+                <form th:action="@{/dashboard/admin/usun}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${user.uzytkownikId}" />
+                    <button type="submit" onclick="return confirm('Na pewno chcesz usunąć użytkownika?')">Usuń</button>
+                </form>
+            </li>
         </ul>
     </div>
+
     <div class="add-user">
         <h2>Dodaj użytkownika</h2>
-        <form id="addUserForm" onsubmit="addUser(event)">
+        <form role="form" method="post" th:action="@{/dashboard/admin}" th:object="${uzytkownik}">
+            <div th:if="${error}" style="color:red;">
+                <p th:text="${error}"></p>
+            </div>
+
             <label for="login">Login:</label>
-            <input type="text" id="login" required>
+            <input type="text"
+                   id="login"
+                   th:field="*{login}"
+                   required>
 
             <label for="password">Hasło:</label>
-            <input type="password" id="password" required>
+            <input type="password"
+                   id="password"
+                   th:field="*{haslo}"
+                   required>
 
-            <label for="role">Rola:</label>
-            <select id="role">
+            <label for="rola">Rola:</label>
+            <select id="rola"
+                    th:field="*{rola}">
                 <option value="Admin">Admin</option>
                 <option value="Urzędnik">Urzędnik</option>
                 <option value="Podatnik">Podatnik</option>
             </select>
 
+            <label for="urzad">Urząd:</label>
+            <select id="urzad"
+                    th:field="*{urzad.urzadId}">
+                <option value="">-- Wybierz urząd --</option>
+                <option th:each="u : ${urzedy}"
+                        th:value="${u.urzadId}"
+                        th:text="${u.miejscowosc}"></option>
+            </select>
             <button type="submit">Dodaj użytkownika</button>
         </form>
     </div>
+
+    <!-- Sekcja urzędów -->
+    <div class="urzedy-section">
+        <h2>Zarządzanie urzędami</h2>
+
+        <!-- Formularz dodawania urzędu -->
+        <form method="post" th:action="@{/dashboard/admin/urzad}" th:object="${urzad}">
+            <div th:if="${officeError}" style="color:red;">
+                <p th:text="${officeError}"></p>
+            </div>
+            <label for="miejscowosc">Miejscowość:</label>
+            <input type="text" id="miejscowosc" th:field="*{miejscowosc}" required>
+            <button type="submit">Dodaj urząd</button>
+        </form>
+
+        <h3>Lista urzędów</h3>
+        <input type="text" id="officeSearch" placeholder="Szukaj urzędów..." onkeyup="filterTable('officeSearch', 'officeDropdown')">
+        <ul id="officeDropdown" class="dropdown-list">
+            <li th:each="u : ${urzedy}">
+                <span th:text="${u.miejscowosc}"></span>
+                <form th:action="@{/dashboard/admin/urzad/usun}" method="post" style="display:inline;">
+                    <input type="hidden" name="id" th:value="${u.urzadId}" />
+                    <button type="submit" onclick="return confirm('Na pewno chcesz usunąć ten urząd?')">Usuń</button>
+                </form>
+            </li>
+        </ul>
+    </div>
 </div>
 
+<script>
+    function filterTable(inputId, listId) {
+        const input = document.getElementById(inputId).value.toLowerCase();
+        const listItems = document.querySelectorAll(`#${listId} li`);
 
-<script src="admin.js"></script>
+        listItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(input) ? "" : "none";
+        });
+    }
+</script>
+
 <footer class="footer">
     <p>&copy; 2025 Kawecki,Kroczek,Kujbida,Witkowski</p>
 </footer>
