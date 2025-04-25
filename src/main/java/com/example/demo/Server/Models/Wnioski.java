@@ -7,31 +7,53 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "wnioski")
-@Data
 public class Wnioski {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    private int wniosekId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer wniosekId;
 
-    @Column
-    private String uri;
+    @Column(nullable = false)
+    private String fileName;
 
-    @Column
-    private String status;
+    @Column(nullable = false)
+    private String fileUri;
+
+    @Column(nullable = false)
+    private String status = "NOWY";
 
     @Column
     private String komentarzDoWniosku;
 
-    @ManyToOne
-    @JoinColumn(name = "uzytkownik")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "uzytkownik_id", nullable = false)
     private Uzytkownicy uzytkownik;
 
-    public String getUri() {
-        return uri;
+    // Dodatkowe pole do przechowywania oryginalnej nazwy pliku
+    @Column
+    private String originalFileName;
+
+    public Integer getWniosekId() {
+        return wniosekId;
     }
 
-    public void setUri(String uri) {
-        this.uri = uri;
+    public void setWniosekId(Integer wniosekId) {
+        this.wniosekId = wniosekId;
+    }
+
+    public String getFileName() {
+        return fileName;
+    }
+
+    public void setFileName(String fileName) {
+        this.fileName = fileName;
+    }
+
+    public String getFileUri() {
+        return fileUri;
+    }
+
+    public void setFileUri(String fileUri) {
+        this.fileUri = fileUri;
     }
 
     public String getStatus() {
@@ -42,11 +64,11 @@ public class Wnioski {
         this.status = status;
     }
 
-    public String getkomentarzDoWniosku() {
+    public String getKomentarzDoWniosku() {
         return komentarzDoWniosku;
     }
 
-    public void setkomentarzDoWniosku(String komentarzDoWniosku) {
+    public void setKomentarzDoWniosku(String komentarzDoWniosku) {
         this.komentarzDoWniosku = komentarzDoWniosku;
     }
 
@@ -56,5 +78,13 @@ public class Wnioski {
 
     public void setUzytkownik(Uzytkownicy uzytkownik) {
         this.uzytkownik = uzytkownik;
+    }
+
+    public String getOriginalFileName() {
+        return originalFileName;
+    }
+
+    public void setOriginalFileName(String originalFileName) {
+        this.originalFileName = originalFileName;
     }
 }

@@ -1,12 +1,17 @@
 package com.example.demo.Server.Controllers.Api;
 
+import com.example.demo.Server.Models.Uzytkownicy;
 import com.example.demo.Server.Models.Wnioski;
+import com.example.demo.Server.Repository.UzytkownicyRepository;
+import com.example.demo.Server.Service.FileStorageService;
 import com.example.demo.Server.Service.WnioskiService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
@@ -16,16 +21,44 @@ import java.util.List;
 public class WnioskiController {
 
     private final WnioskiService wnioskiService;
+    private final FileStorageService fileStorageService;
+    private final UzytkownicyRepository uzytkownicyRepository;
 
     @Autowired
-    public WnioskiController(WnioskiService wnioskiService){
+    public WnioskiController(WnioskiService wnioskiService,
+                             FileStorageService fileStorageService,
+                             UzytkownicyRepository uzytkownicyRepository) {
         this.wnioskiService = wnioskiService;
+        this.fileStorageService = fileStorageService;
+        this.uzytkownicyRepository = uzytkownicyRepository;
     }
 
-    @PostMapping(value = "/create")
-    public ResponseEntity<Wnioski> addWnioski(@Valid @RequestBody Wnioski wniosek){
-        Wnioski savedWniosek = wnioskiService.addWnioski(wniosek);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedWniosek);
+    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> createWniosek(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("uzytkownikId") Long uzytkownikId,
+            @RequestParam(value = "komentarz", required = false) String komentarz) {
+
+        try {
+            Uzytkownicy uzytkownik = uzytkownicyRepository.findById(uzytkownikId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Użytkownik nie istnieje"));
+
+            String fileName = fileStorageService.storeFile(file);
+
+            Wnioski wniosek = new Wnioski();
+            wniosek.setOriginalFileName(file.getOriginalFilename());
+            wniosek.setFileName(fileName);
+            wniosek.setFileUri("/Files/" + fileName);
+            wniosek.setUzytkownik(uzytkownik);
+            wniosek.setKomentarzDoWniosku(komentarz);
+
+            Wnioski savedWniosek = wnioskiService.addWnioski(wniosek);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(savedWniosek);
+
+        } catch (Exception ex) {
+            return ResponseEntity.badRequest().body(ex.getMessage());
+        }
     }
 
     @GetMapping(value = "/{id}")
