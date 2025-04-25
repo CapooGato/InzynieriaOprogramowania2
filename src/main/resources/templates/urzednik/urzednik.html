@@ -28,7 +28,7 @@
         <tbody id="wnioskiList">
         <tr th:each="wniosek : ${wnioski}">
             <td th:text="${wniosek.uzytkownik.login} ?: 'Brak imienia'"></td>
-            <td th:text="${wniosek.fileName}"></td>
+            <td ><a th:href="${wniosek.fileUri}" th:text="${wniosek.fileName}"></a></td>
             <td th:text="${wniosek.status}"></td>
             <td th:text="${wniosek.komentarzDoWniosku} ?: 'Brak komentarza'"></td>
         </tr>
