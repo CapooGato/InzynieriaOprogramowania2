@@ -8,10 +8,10 @@
     <link rel="stylesheet" th:href="@{/css/styles.css}" />
 
     <link rel="stylesheet" th:href="@{/css/urzednik.css}">
-
+    <script async src="/js/urzednik.js"></script>
 </head>
 <body>
-<header class="header">Panel Urzędnika <b>Urząd Skarbowy w <span th:text="${nazwisko}"></span></b></header>
+<header class="header">Panel Urzędnika <b>Urząd Skarbowy w <span th:text="${miejscowosc}"></span></b></header>
 
 <div class="container">
     <h2>Lista wniosków do przyjęcia</h2>
@@ -26,11 +26,17 @@
         </tr>
         </thead>
         <tbody id="wnioskiList">
-        <tr th:each="wniosek : ${wnioski}">
+        <tr th:each="wniosek  : ${wnioski}">
             <td th:text="${wniosek.uzytkownik.login} ?: 'Brak imienia'"></td>
-            <td ><a th:href="${wniosek.fileUri}" th:text="${wniosek.fileName}"></a></td>
+            <td ><a th:href="${wniosek.wniosekId}" th:text="${wniosek.fileName}"></a></td>
             <td th:text="${wniosek.status}"></td>
             <td th:text="${wniosek.komentarzDoWniosku} ?: 'Brak komentarza'"></td>
+            <td>
+
+                <button class="accept-btn" th:data-wniosek-id="${wniosek.wniosekId}">Zaakceptuj</button>
+                <button class="reject-btn" th:data-wniosek-id="${wniosek.wniosekId}">Odrzuć</button>
+
+            </td>
         </tr>
         <tr th:if="${#lists.isEmpty(wnioski)}">
             <td colspan="4">Brak wniosków do wyświetlenia.</td>
@@ -41,5 +47,6 @@
 <footer class="footer">
     <p>&copy; 2025 Kawecki,Kroczek,Kujbida,Witkowski</p>
 </footer>
+
 </body>
 </html>

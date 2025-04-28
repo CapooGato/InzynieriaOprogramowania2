@@ -24,7 +24,7 @@ public class Wnioski {
     @Column
     private String komentarzDoWniosku;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "uzytkownik_id", nullable = false)
     private Uzytkownicy uzytkownik;
 

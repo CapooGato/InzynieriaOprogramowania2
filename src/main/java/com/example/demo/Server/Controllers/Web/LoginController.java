@@ -124,7 +124,7 @@ public class LoginController {
         Integer uzytkownikIdInt = (Integer) session.getAttribute("uzytkownikId");
         Optional<Uzytkownicy> uzytkownicy = uzytkownicyRepository.findById(Long.valueOf(uzytkownikIdInt));
         List<Wnioski> wnioskiList = wnioskiService.getWnioskiByUrzadId(uzytkownicy.get().getUrzad().getUrzadId());
-        model.addAttribute("nazwisko",uzytkownicy.get().getUrzad().getMiejscowosc());
+        model.addAttribute("miejscowosc",uzytkownicy.get().getUrzad().getMiejscowosc());
         model.addAttribute("wnioski",wnioskiList);
         return "urzednik/urzednik";
     }
