@@ -1,6 +1,6 @@
 /* Styl dla kontenera */
 .container {
-    max-width: 800px;
+    max-width: 80vw;
     margin: 100px auto 50px;
     padding: 20px;
     background-color: var(--secondary-color);
