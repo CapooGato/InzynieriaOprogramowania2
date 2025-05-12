@@ -2,7 +2,6 @@ package com.example.demo.Server.Service;
 
 import com.example.demo.Server.Models.Urzedy;
 import com.example.demo.Server.Repository.UrzedyRepository;
-import jakarta.validation.constraints.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,12 +25,14 @@ public class UrzedyService {
     }
 
     public Optional<Urzedy> updateUrzad(Long id, Urzedy updateUrzad) {
-        return urzedyRepository.findById(id)
+        return Optional.ofNullable(urzedyRepository.findById(id)
                 .map(urzad -> {
                     urzad.setMiejscowosc(updateUrzad.getMiejscowosc());
                     return urzedyRepository.save(urzad);
-                });
+                })
+                .orElseThrow(() -> new RuntimeException("Urzad not found")));
     }
+
     public Boolean removeUrzadById(Long id ){
         Optional<Urzedy> urzad = urzedyRepository.findById(id);
         if(urzad.isPresent()){
