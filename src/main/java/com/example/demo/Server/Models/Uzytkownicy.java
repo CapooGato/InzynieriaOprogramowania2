@@ -10,7 +10,6 @@ import java.util.Collection;
 
 @Entity
 @Table(name = "uzytkownicy")
-
 public class Uzytkownicy {
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

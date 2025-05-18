@@ -10,10 +10,33 @@
 <header class="header">Panel Podatnika</header>
 
 <div class="container">
-
     <h2>Dostępne szablony wniosków</h2>
-    <div id="szablony-lista" class="szablony-box">
-        <p>Ładowanie szablonów...</p>
+
+    <div class="szablony-i-platnosci">
+        <div id="szablony-lista" class="szablony-box">
+            <p>Ładowanie szablonów...</p>
+        </div>
+
+        <div class="sidebar">
+            <h2>Oczekujące płatności</h2>
+            <div class="platnosci-list scrollable">
+                <div th:each="platnosc : ${platnosci}"
+                     class="platnosc-item"
+                     th:onclick="|toggleDetails('details-${platnosc.id}')|">
+                    <div>Kwota: [[${#numbers.formatCurrency(platnosc.kwota)}]] PLN</div>
+                    <div>Termin: [[${#temporals.format(platnosc.termin, 'dd.MM.yyyy')}]]</div>
+                    <div class="platnosc-details" th:id="'details-' + ${platnosc.id}" style="display: none;">
+                        <hr>
+                        <div>ID płatności: [[${platnosc.id}]]</div>
+                        <div>Status: [[${platnosc.status}]]</div>
+                    </div>
+                </div>
+                <div th:if="${platnosci.isEmpty()}" class="platnosc-item">
+                    Brak zaległych płatności
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <hr>
@@ -36,6 +59,31 @@
     </form>
 
     <div id="messages" class="messages-container"></div>
+
+    <!-- Modal do potwierdzania płatności -->
+    <div id="paymentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Potwierdź płatność</h3>
+            <form id="paymentForm">
+                <input type="hidden" id="paymentId">
+                <div class="form-group">
+                    <label for="podpis">Podpis:</label>
+                    <input type="text" id="podpis" required>
+                </div>
+                <button type="submit" class="btn-confirm">Potwierdź</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modyfikacja elementu płatności -->
+    <div class="platnosc-item" th:each="platnosc : ${platnosci}">
+        <div class="platnosc-header">
+            <span class="kwota">[[${#numbers.formatCurrency(platnosc.kwota)}]] PLN</span>
+            <button class="pay-btn" th:data-id="${platnosc.id}">Zapłać</button>
+        </div>
+        <!-- ... reszta elementów ... -->
+    </div>
 </div>
 
 <footer class="footer">
@@ -44,88 +92,228 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        const form = document.getElementById('uploadForm');
+    const modal = document.getElementById('paymentModal');
+    const closeBtn = document.querySelector('.close');
+    let currentPayments = [];
+
+    // Funkcja do pokazywania komunikatów
+    const showMessage = (message, isError = false) => {
         const messagesContainer = document.getElementById('messages');
-        const szablonyContainer = document.getElementById('szablony-lista');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isError ? 'error' : 'success'}`;
+        messageDiv.textContent = message;
+        messagesContainer.appendChild(messageDiv);
+        setTimeout(() => messageDiv.remove(), 5000);
+    };
 
-        const showMessage = (message, isError = false) => {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${isError ? 'error' : 'success'}`;
-            messageDiv.textContent = message;
-            messagesContainer.appendChild(messageDiv);
-            setTimeout(() => messageDiv.remove(), 5000);
-        };
+    // Funkcja tworząca element płatności
+    const createPaymentElement = (payment) => {
+        const paymentDiv = document.createElement('div');
+        paymentDiv.className = 'platnosc-item';
+        paymentDiv.dataset.id = payment.id;
 
-        const fetchSzablony = async () => {
-            try {
-                const response = await fetch('/api/szablony');
-                const data = await response.json();
+        paymentDiv.innerHTML = `
+            <div class="platnosc-header">
+                <span class="kwota">${new Intl.NumberFormat('pl-PL', {
+                    style: 'currency',
+                    currency: 'PLN'
+                }).format(payment.kwota)}</span>
+                <button class="pay-btn">Zapłać</button>
+            </div>
+            <div class="platnosc-details">
+                <div>Termin: ${new Date(payment.termin).toLocaleDateString('pl-PL')}</div>
+                <div>ID: ${payment.id}</div>
+                <div>Status: ${payment.status}</div>
+            </div>
+        `;
 
-                szablonyContainer.innerHTML = '';
-                if (!data.length) {
-                    szablonyContainer.textContent = 'Brak dostępnych szablonów.';
-                    return;
-                }
-
-                data.forEach(szablon => {
-                    const link = document.createElement('a');
-                    link.href = szablon.url;
-                    link.textContent = szablon.nazwa;
-                    link.className = 'szablon-link';
-                    link.download = szablon.nazwa;
-                    szablonyContainer.appendChild(link);
-                    szablonyContainer.appendChild(document.createElement('br'));
-                });
-            } catch (err) {
-                szablonyContainer.textContent = 'Nie udało się załadować szablonów.';
-            }
-        };
-
-        fetchSzablony();
-
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const formData = new FormData();
-            const fileInput = document.getElementById('wniosekPlik');
-            const uzytkownikId = document.getElementById('uzytkownikId').value;
-            const komentarz = document.getElementById('komentarz').value;
-
-            if (fileInput.files.length === 0) {
-                showMessage('Proszę wybrać plik PDF', true);
-                return;
-            }
-
-            const file = fileInput.files[0];
-            if (file.type !== 'application/pdf') {
-                showMessage('Dozwolone są tylko pliki PDF', true);
-                return;
-            }
-
-            formData.append('file', file);
-            formData.append('uzytkownikId', uzytkownikId);
-            formData.append('komentarz', komentarz);
-
-            try {
-                const response = await fetch('/api/wnioski/create', {
-                    method: 'POST',
-                    body: formData
-                });
-
-                const result = await response.json();
-
-                if (response.ok) {
-                    showMessage(`Wniosek nr ${result.wniosekId} został złożony pomyślnie!`);
-                    form.reset();
-                } else {
-                    showMessage(`Błąd: ${result.error || 'Nieznany błąd'}`, true);
-                }
-            } catch (error) {
-                showMessage('Wystąpił błąd podczas przesyłania pliku', true);
-                console.error('Error:', error);
-            }
+        paymentDiv.querySelector('.pay-btn').addEventListener('click', () => {
+            document.getElementById('paymentId').value = payment.id;
+            modal.style.display = 'block';
         });
+
+        return paymentDiv;
+    };
+
+    // Funkcja odświeżająca listę płatności
+    const refreshPayments = async () => {
+        try {
+            const response = await fetch('/api/platnosci/oczekujace', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                credentials: 'include'
+            });
+
+            if (!response.ok) throw new Error('Błąd pobierania danych');
+
+            const newPayments = await response.json();
+            const paymentsContainer = document.querySelector('.platnosci-list');
+
+            // Aktualizacja tylko jeśli są zmiany
+            if (JSON.stringify(newPayments) !== JSON.stringify(currentPayments)) {
+                paymentsContainer.innerHTML = '';
+
+                newPayments.forEach(payment => {
+                    paymentsContainer.appendChild(createPaymentElement(payment));
+                });
+
+                currentPayments = newPayments;
+
+                if (newPayments.length === 0) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'platnosc-item empty';
+                    emptyDiv.textContent = 'Brak zaległych płatności';
+                    paymentsContainer.appendChild(emptyDiv);
+                }
+            }
+        } catch (error) {
+            showMessage('Błąd odświeżania listy płatności', true);
+            console.error('Błąd:', error);
+        }
+    };
+
+    // Automatyczne odświeżanie co 30 sekund
+    setInterval(refreshPayments, 30000);
+    refreshPayments(); // Pierwsze ładowanie
+
+    // Obsługa modala
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
     });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    // Obsługa formularza płatności
+    document.getElementById('paymentForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const paymentId = document.getElementById('paymentId').value;
+        const podpis = document.getElementById('podpis').value;
+
+        if (!podpis) {
+            showMessage('Podpis jest wymagany!', true);
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/platnosci/${paymentId}/oplac`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify({ podpis }),
+                credentials: 'include'
+            });
+
+            if (response.ok) {
+                const paymentElement = document.querySelector(`[data-id="${paymentId}"]`);
+                if (paymentElement) {
+                    paymentElement.remove();
+                    showMessage('Płatność została potwierdzona!');
+                }
+                modal.style.display = 'none';
+                document.getElementById('podpis').value = '';
+            } else {
+                throw new Error('Błąd serwera');
+            }
+        } catch (error) {
+            showMessage('Błąd podczas przetwarzania płatności', true);
+            console.error('Błąd:', error);
+        }
+    });
+
+    // Reszta istniejącego kodu (obsługa formularza wniosku itd.)
+});
+    document.addEventListener('DOMContentLoaded', () => {
+          const form = document.getElementById('uploadForm');
+          const messagesContainer = document.getElementById('messages');
+          const szablonyContainer = document.getElementById('szablony-lista');
+
+          const showMessage = (message, isError = false) => {
+              const messageDiv = document.createElement('div');
+              messageDiv.className = `message ${isError ? 'error' : 'success'}`;
+              messageDiv.textContent = message;
+              messagesContainer.appendChild(messageDiv);
+              setTimeout(() => messageDiv.remove(), 5000);
+          };
+
+          const fetchSzablony = async () => {
+              try {
+                  const response = await fetch('/api/szablony');
+                  const data = await response.json();
+
+                  szablonyContainer.innerHTML = '';
+                  if (!data.length) {
+                      szablonyContainer.textContent = 'Brak dostępnych szablonów.';
+                      return;
+                  }
+
+                  data.forEach(szablon => {
+                      const link = document.createElement('a');
+                      link.href = szablon.url;
+                      link.textContent = szablon.nazwa;
+                      link.className = 'szablon-link';
+                      link.download = szablon.nazwa;
+                      szablonyContainer.appendChild(link);
+                      szablonyContainer.appendChild(document.createElement('br'));
+                  });
+              } catch (err) {
+                  szablonyContainer.textContent = 'Nie udało się załadować szablonów.';
+              }
+          };
+
+          fetchSzablony();
+
+          form.addEventListener('submit', async (e) => {
+              e.preventDefault();
+
+              const formData = new FormData();
+              const fileInput = document.getElementById('wniosekPlik');
+              const uzytkownikId = document.getElementById('uzytkownikId').value;
+              const komentarz = document.getElementById('komentarz').value;
+
+              if (fileInput.files.length === 0) {
+                  showMessage('Proszę wybrać plik PDF', true);
+                  return;
+              }
+
+              const file = fileInput.files[0];
+              if (file.type !== 'application/pdf') {
+                  showMessage('Dozwolone są tylko pliki PDF', true);
+                  return;
+              }
+
+              formData.append('file', file);
+              formData.append('uzytkownikId', uzytkownikId);
+              formData.append('komentarz', komentarz);
+
+              try {
+                  const response = await fetch('/api/wnioski/create', {
+                      method: 'POST',
+                      body: formData
+                  });
+
+                  const result = await response.json();
+
+                  if (response.ok) {
+                      showMessage(`Wniosek nr ${result.wniosekId} został złożony pomyślnie!`);
+                      form.reset();
+                  } else {
+                      showMessage(`Błąd: ${result.error || 'Nieznany błąd'}`, true);
+                  }
+              } catch (error) {
+                  showMessage('Wystąpił błąd podczas przesyłania pliku', true);
+                  console.error('Error:', error);
+              }
+          });
+      });
 </script>
 </body>
 </html>

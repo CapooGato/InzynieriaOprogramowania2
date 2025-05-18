@@ -1,4 +1,4 @@
-/* Zmienne kolorów */
+/* ==================== Zmienne kolorów ==================== */
 :root {
     --primary-color: #6D8196; /* Szaro-niebieski */
     --secondary-color: #ADCCED; /* Jasny niebieski */
@@ -6,11 +6,7 @@
     --dark-color: #36404A; /* Ciemny niebieski */
 }
 
-.spacer {
-    min-height: 100px;
-}
-
-/* Styl całej strony */
+/* ==================== Układ podstawowy ==================== */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
@@ -18,22 +14,11 @@ body {
     background-color: var(--dark-color);
     display: flex;
     flex-direction: column;
-    min-height: 100vh; /* Aby cała strona była co najmniej wysokości ekranu */
+    min-height: 100vh;
 }
 
-/* Nagłówek formularza */
-h2 {
-    text-align: center;
-    color: var(--dark-color);
-    margin-bottom: 20px;
-    font-size: 24px;
-}
-
-/* Komunikaty o błędach */
-.error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
+.spacer {
+    min-height: 100px;
 }
 
 header {
@@ -57,67 +42,66 @@ header {
     width: 100%;
 }
 
+/* ==================== Nagłówki i komunikaty ==================== */
+h2 {
+    text-align: center;
+    color: var(--dark-color);
+    margin-bottom: 20px;
+    font-size: 24px;
+}
 
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+}
 
-/* Styl dla kontenera */
+.message {
+    padding: 10px 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+/* ==================== Kontener główny ==================== */
 .container {
-    max-width: 600px;
+    max-width: 1200px;
     margin: 100px auto 50px;
     padding: 20px;
     background-color: var(--secondary-color);
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
 }
 
-/* Styl dla formularza */
-form {
+/* ==================== Układ: Szablony i płatności ==================== */
+.szablony-i-platnosci {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 40px;
 }
 
-label {
-    margin-top: 10px;
-    font-weight: bold;
-    color: var(--dark-color);
-}
-
-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid var(--accent-color);
-    border-radius: 4px;
-}
-
-input[type="file"] {
-    border: none;
-}
-
-button {
-    margin-top: 15px;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    background-color: var(--primary-color);
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-button:hover {
-    background-color: var(--accent-color);
-}
-/* Sekcja z szablonami */
 .szablony-box {
-    width: 90%;
-    margin-bottom: 30px;
-    padding: 20px;
+    flex: 1;
+    min-width: 300px;
+    max-width: 60%;
     background-color: var(--primary-color);
-    border-radius: 6px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
     color: white;
+    padding: 20px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
     font-size: 16px;
     line-height: 1.6;
 }
@@ -138,21 +122,151 @@ button:hover {
     background-color: var(--dark-color);
 }
 
-/* Komunikaty */
-.message {
-    padding: 10px 15px;
-    margin: 10px 0;
-    border-radius: 5px;
+/* Sidebar z płatnościami */
+.sidebar {
+    width: 35%;
+    min-width: 280px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Pojedyncza płatność */
+.platnosc-item {
+    padding: 15px;
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.platnosc-item:hover {
+    background-color: #f8f9fa;
+    border-color: #007bff;
+}
+
+.platnosc-details {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #eee;
+}
+
+/* ==================== Formularz ==================== */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
     font-weight: bold;
-    text-align: center;
+    color: var(--dark-color);
 }
 
-.message.success {
-    background-color: #d4edda;
-    color: #155724;
+input,
+textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid var(--accent-color);
+    border-radius: 4px;
+    box-sizing: border-box;
 }
 
-.message.error {
-    background-color: #f8d7da;
-    color: #721c24;
+input[type="file"] {
+    border: none;
+}
+
+button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--primary-color);
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background-color: var(--accent-color);
+}
+
+/* ==================== Responsywność ==================== */
+@media (max-width: 900px) {
+    .szablony-i-platnosci {
+        flex-direction: column;
+    }
+
+    .szablony-box,
+    .sidebar {
+        max-width: 100%;
+        width: 100%;
+    }
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1001;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: var(--secondary-color);
+    margin: 15% auto;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+}
+
+.btn-confirm {
+    background-color: #28a745;
+    margin-top: 15px;
+}
+
+.pay-btn {
+    background-color: var(--accent-color);
+    padding: 8px 15px;
+    border-radius: 4px;
+    border: none;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.pay-btn:hover {
+    background-color: var(--dark-color);
+}
+.platnosci-list.scrollable {
+    max-height: 400px; /* lub dowolna wartość dopasowana do projektu */
+    overflow-y: auto;
+    padding-right: 5px; /* dla miejsca na scroll */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+
+/* Opcjonalnie: upiększenie scrollbara */
+.platnosci-list.scrollable::-webkit-scrollbar {
+    width: 8px;
+}
+.platnosci-list.scrollable::-webkit-scrollbar-thumb {
+    background-color: #aaa;
+    border-radius: 4px;
+}
+.platnosci-list.scrollable::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
 }

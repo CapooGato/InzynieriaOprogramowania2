@@ -1,8 +1,10 @@
 package com.example.demo.Server.Controllers.Web;
 
+import com.example.demo.Server.Models.Platnosci;
 import com.example.demo.Server.Models.Urzedy;
 import com.example.demo.Server.Models.Uzytkownicy;
 import com.example.demo.Server.Models.Wnioski;
+import com.example.demo.Server.Repository.PlatnosciRepository;
 import com.example.demo.Server.Repository.UzytkownicyRepository;
 import com.example.demo.Server.Repository.WnioskiRepository;
 import com.example.demo.Server.Service.UrzedyService;
@@ -29,14 +31,17 @@ public class LoginController {
     private final UrzedyService urzedyService;
     private final UzytkownicyRepository uzytkownicyRepository;
     private final WnioskiService wnioskiService;
+    private final PlatnosciRepository platnosciRepository;
 
     @Autowired
     public LoginController(UzytkownicyService uzytkownicyService, UrzedyService urzedyService,
-                           UzytkownicyRepository uzytkownicyRepository, WnioskiService wnioskiService){
+                           UzytkownicyRepository uzytkownicyRepository, WnioskiService wnioskiService,
+                           PlatnosciRepository platnosciRepository){
         this.uzytkownicyService = uzytkownicyService;
         this.urzedyService = urzedyService;
         this.uzytkownicyRepository = uzytkownicyRepository;
         this.wnioskiService = wnioskiService;
+        this.platnosciRepository = platnosciRepository;
     }
 
     @GetMapping(value = "/login")
@@ -144,6 +149,13 @@ public class LoginController {
         Uzytkownicy uzytkownik = uzytkownicyRepository.findById(uzytkownikId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Użytkownik nie znaleziony"));
 
+        List<Platnosci> platnosci = platnosciRepository.findByUzytkownikAndStatus(
+                uzytkownik,
+                "OCZEKUJACA"
+        );
+
+        model.addAttribute("uzytkownik", uzytkownik);
+        model.addAttribute("platnosci", platnosci);
         model.addAttribute("uzytkownik", uzytkownik);
         return "podatnik/podatnik";
     }
