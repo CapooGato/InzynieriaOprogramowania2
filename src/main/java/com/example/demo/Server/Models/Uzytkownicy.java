@@ -29,7 +29,7 @@ public class Uzytkownicy {
     @Column(name = "rola")
     private String rola;
 
-    @OneToMany(mappedBy = "uzytkownik", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "uzytkownik", fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Collection<Wnioski> wnioskisByUzytkownikId;
 

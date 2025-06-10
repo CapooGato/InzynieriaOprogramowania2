@@ -15,7 +15,7 @@ public class Urzedy {
 
     private String miejscowosc;
 
-    @OneToMany(mappedBy = "urzad", orphanRemoval = true)
+    @OneToMany(mappedBy = "urzad")
     @JsonIgnore
     private Collection<Uzytkownicy> uzytkowniciesByUrzadId;
 

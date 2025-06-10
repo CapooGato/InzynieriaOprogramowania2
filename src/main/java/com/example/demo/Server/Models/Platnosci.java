@@ -17,7 +17,7 @@ public class Platnosci {
     private LocalDate termin;
     private String status; // np. "OCZEKUJACA", "OPLACONA"
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "uzytkownik_id")
     private Uzytkownicy uzytkownik;
 
