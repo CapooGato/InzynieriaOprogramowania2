@@ -7,6 +7,8 @@ import com.example.demo.Server.Service.FileStorageService;
 import com.example.demo.Server.Service.WnioskiService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.MalformedURLException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -74,6 +79,21 @@ public class WnioskiController {
         return wnioskiList.isEmpty()
                 ? ResponseEntity.status(HttpStatus.NO_CONTENT).build()
                 : ResponseEntity.status(HttpStatus.OK).body(wnioskiList);
+    }
+    @GetMapping(value = "pliki/{filename}")
+    public ResponseEntity<Resource> getFile(@PathVariable String filename) throws MalformedURLException {
+        Path file = Paths.get("uploads", "wnioski").resolve(filename).normalize();
+        Resource resource = new UrlResource(file.toUri());
+
+        if (!resource.exists() || !resource.isReadable()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nie znaleziono zasobu");
+
+        }
+
+
+        return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(resource);
     }
 
     @PutMapping(value = "/{id}/update")
