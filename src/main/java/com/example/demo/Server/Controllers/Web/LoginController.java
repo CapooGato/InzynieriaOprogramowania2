@@ -177,7 +177,11 @@ public class LoginController {
     public String addUserByAdmin(@ModelAttribute("uzytkownik") Uzytkownicy uzytkownik, Model model) {
         Optional<Uzytkownicy> istnieje = uzytkownicyService.findByLogin(uzytkownik.getLogin());
         if (istnieje.isPresent()) {
-            model.addAttribute("error", "Użytkownik o takim loginie już istnieje.");
+            model.addAttribute("uzytkownik", new Uzytkownicy());
+            model.addAttribute("uzytkownicy", uzytkownicyService.getAllUzytkownicy());
+            model.addAttribute("urzad", new Urzedy());
+            model.addAttribute("urzedy", urzedyService.findAll());
+            model.addAttribute("error", "Użytkownik już istnieje.");
             return "admin/admin"; // wracasz na stronę z komunikatem o błędzie
         }
         uzytkownicyService.addUzytkownicy(uzytkownik);
