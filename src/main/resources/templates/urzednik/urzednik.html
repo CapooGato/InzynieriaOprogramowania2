@@ -26,7 +26,7 @@
         <tbody id="wnioskiList">
         <tr th:each="wniosek  : ${wnioski}">
             <td th:text="${wniosek.uzytkownik.login} ?: 'Brak imienia'"></td>
-            <td ><a th:href="@{'http://localhost:8080/api/wnioski/pliki/' + ${wniosek.fileName}}" th:text="${wniosek.fileName}"></a></td>
+            <td ><a th:href="@{'http://localhost:5555/api/wnioski/pliki/' + ${wniosek.fileName}}" th:text="${wniosek.fileName}"></a></td>
             <td th:text="${wniosek.status}"></td>
             <td th:text="${wniosek.komentarzDoWniosku} ?: 'Brak komentarza'"></td>
             <td>

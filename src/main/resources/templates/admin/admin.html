@@ -49,7 +49,7 @@
 
             <label for="rola">Rola:</label>
             <select id="rola"
-                    th:field="*{rola}">
+                    th:field="*{rola}" required>
                 <option value="Admin">Admin</option>
                 <option value="Urzednik">Urzędnik</option>
                 <option value="Podatnik">Podatnik</option>
@@ -57,7 +57,7 @@
 
             <label for="urzad">Urząd:</label>
             <select id="urzad"
-                    th:field="*{urzad.urzadId}">
+                    th:field="*{urzad.urzadId}" required    >
                 <option value="">-- Wybierz urząd --</option>
                 <option th:each="u : ${urzedy}"
                         th:value="${u.urzadId}"

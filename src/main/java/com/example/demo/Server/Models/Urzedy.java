@@ -15,7 +15,7 @@ public class Urzedy {
 
     private String miejscowosc;
 
-    @OneToMany(mappedBy = "urzad")
+    @OneToMany(mappedBy = "urzad",fetch = FetchType.EAGER,cascade = CascadeType.REMOVE)
     @JsonIgnore
     private Collection<Uzytkownicy> uzytkowniciesByUrzadId;
 

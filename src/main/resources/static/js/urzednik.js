@@ -95,7 +95,7 @@ console.log(acceptBtn)
 acceptBtn.forEach(e=>{
     e.addEventListener('click',()=>{
 
-        fetch(`http://localhost:8080/api/wnioski/${e.dataset.wniosekId}`, {
+        fetch(`http://localhost:5555/api/wnioski/${e.dataset.wniosekId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'}
@@ -111,7 +111,7 @@ acceptBtn.forEach(e=>{
                 wniosekData.status = "ZAAKCEPTOWANY";
 
 
-                return fetch(`http://localhost:8080/api/wnioski/${e.dataset.wniosekId}/update`, {
+                return fetch(`http://localhost:5555/api/wnioski/${e.dataset.wniosekId}/update`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -139,7 +139,7 @@ acceptBtn.forEach(e=>{
 rejectBtn.forEach(e=>{
     e.addEventListener('click',()=>{
 
-        fetch(`http://localhost:8080/api/wnioski/${e.dataset.wniosekId}`, {
+        fetch(`http://localhost:5555/api/wnioski/${e.dataset.wniosekId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'}
@@ -155,7 +155,7 @@ rejectBtn.forEach(e=>{
                 wniosekData.status = "ODRZUCONY";
 
 
-                return fetch(`http://localhost:8080/api/wnioski/${e.dataset.wniosekId}/update`, {
+                return fetch(`http://localhost:5555/api/wnioski/${e.dataset.wniosekId}/update`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

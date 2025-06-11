@@ -15,7 +15,7 @@ public class PlatnosciGenerator {
     public static final List<Platnosci> wszystkiePlatnosci = new CopyOnWriteArrayList<>();
 
     // Co 20–30 sekund (losowo) — dynamicznie sterowane wewnątrz metody
-    @Scheduled(fixedDelayString = "#{T(java.util.concurrent.ThreadLocalRandom).current().nextInt(20000, 30000)}")
+    //@Scheduled(fixedDelayString = "#{T(java.util.concurrent.ThreadLocalRandom).current().nextInt(20000, 30000)}")
     public void dodajLosowaPlatnosc() {
         Platnosci p = new Platnosci();
         p.setId(System.currentTimeMillis());
